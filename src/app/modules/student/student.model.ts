@@ -1,4 +1,4 @@
-import { Schema, model, connect } from "mongoose";
+import { Schema, model } from "mongoose";
 import { Gurdian, LocalGurdian, Student, UserName } from "./student.interface";
 
 // schema for user name
@@ -17,7 +17,7 @@ const userNameSchema = new Schema<UserName>({
 });
 
 // schema for gurdian
-const GurdianSchema = new Schema<Gurdian>({
+const gurdianSchema = new Schema<Gurdian>({
   fatherName: {
     type: String,
     required: true,
@@ -45,7 +45,7 @@ const GurdianSchema = new Schema<Gurdian>({
 });
 
 // schema for local gurdian
-const LocalGurdianSchema = new Schema<LocalGurdian>({
+const localGurdianSchema = new Schema<LocalGurdian>({
   name: {
     type: String,
     required: true,
@@ -85,8 +85,10 @@ const studentSchema = new Schema<Student>({
   bloodGroup: ["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"],
   presentAddress: { type: String, required: true },
   permanentAddress: { type: String, required: true },
-  gurdian: GurdianSchema,
-  localGurdian: LocalGurdianSchema,
+  gurdian: gurdianSchema,
+  localGurdian: localGurdianSchema,
   profileImage: { type: String },
   isActive: ["Active", "Blocked"],
 });
+
+export const StudentModel = model<Student>("Student", studentSchema);
