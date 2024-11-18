@@ -23,7 +23,7 @@ export type LocalGurdian = {
 export type Student = {
   id: string;
   name: UserName;
-  gender: "Male" | "Female";
+  gender: "Male" | "Female" | "Other";
   dateOfBirth?: string;
   email: string;
   contactNo: string;

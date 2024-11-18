@@ -68,7 +68,11 @@ const localGurdianSchema = new Schema<LocalGurdian>({
 const studentSchema = new Schema<Student>({
   id: { type: String },
   name: userNameSchema,
-  gender: ["Male", "Female"],
+  gender: {
+    type: String,
+    enum: ["Male", "Female", "Other"],
+    required: true,
+  },
   dateOfBirth: String,
   email: {
     type: String,
@@ -82,13 +86,21 @@ const studentSchema = new Schema<Student>({
     type: String,
     required: true,
   },
-  bloodGroup: ["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"],
+  bloodGroup: {
+    type: String,
+    enum: ["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"],
+    required: true,
+  },
   presentAddress: { type: String, required: true },
   permanentAddress: { type: String, required: true },
   gurdian: gurdianSchema,
   localGurdian: localGurdianSchema,
   profileImage: { type: String },
-  isActive: ["Active", "Blocked"],
+  isActive: {
+    type: String,
+    enum: ["Active", "Blocked"],
+    required: true,
+  },
 });
 
 export const StudentModel = model<Student>("Student", studentSchema);
