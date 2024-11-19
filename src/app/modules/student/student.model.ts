@@ -1,106 +1,253 @@
 import { Schema, model } from "mongoose";
-import { Gurdian, LocalGurdian, Student, UserName } from "./student.interface";
+import validator from "validator";
+import bcrypt from "bcrypt";
+import {
+  TGurdian,
+  TLocalGurdian,
+  TStudent,
+  StudentModel,
+  TUserName,
+} from "./student.interface";
+import config from "../../config";
 
 // schema for user name
-const userNameSchema = new Schema<UserName>({
+const userNameSchema = new Schema<TUserName>({
   firstName: {
     type: String,
-    require: true,
+    trim: true,
+    required: [true, "First name is required!"],
+    maxlength: [20, "First name can not be longer than 20 characters!"],
+    validate: {
+      validator: function (value: string) {
+        const firstNameStr = value.charAt(0).toUpperCase() + value.slice(1);
+        return value === firstNameStr;
+      },
+      message: "{VALUE} is not in capitalized format!",
+    },
   },
   middleName: {
     type: String,
+    trim: true,
   },
   lastName: {
     type: String,
-    require: true,
+    trim: true,
+    required: [true, "Last name is required!"],
+    validate: {
+      validator: (value: string) => validator.isAlpha(value),
+      message: "{VALUE} is not valid!",
+    },
   },
 });
 
 // schema for gurdian
-const gurdianSchema = new Schema<Gurdian>({
+const gurdianSchema = new Schema<TGurdian>({
   fatherName: {
     type: String,
-    required: true,
+    trim: true,
+    required: [true, "Father name is required!"],
   },
   fatherOccupation: {
     type: String,
-    required: true,
+    trim: true,
+    required: [true, "Father occupation is required!"],
   },
   fatherContactNo: {
     type: String,
-    required: true,
+    trim: true,
+    required: [true, "Father contact no is required!"],
   },
   motherName: {
     type: String,
-    required: true,
+    trim: true,
+    required: [true, "Mother name is required!"],
   },
   motherOccupation: {
     type: String,
-    required: true,
+    trim: true,
+    required: [true, "Mother occupation is required!"],
   },
   motherContactNo: {
     type: String,
-    required: true,
+    trim: true,
+    required: [true, "Mother contact no is required!"],
   },
 });
 
 // schema for local gurdian
-const localGurdianSchema = new Schema<LocalGurdian>({
+const localGurdianSchema = new Schema<TLocalGurdian>({
   name: {
     type: String,
-    required: true,
+    trim: true,
+    required: [true, "Local gurdian name is required!"],
   },
   occupation: {
     type: String,
-    required: true,
+    trim: true,
+    required: [true, "Local gurdian occupation is required!"],
   },
   contactNo: {
     type: String,
-    required: true,
+    trim: true,
+    required: [true, "Local gurdian contact no is required!"],
   },
   address: {
     type: String,
-    required: true,
+    trim: true,
+    required: [true, "Local gurdian address is required!"],
   },
 });
 
 // student schema
-const studentSchema = new Schema<Student>({
-  id: { type: String },
-  name: userNameSchema,
-  gender: {
-    type: String,
-    enum: ["Male", "Female", "Other"],
-    required: true,
+const studentSchema = new Schema<TStudent, StudentModel>(
+  {
+    id: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    name: {
+      type: userNameSchema,
+      required: [true, "Name is required!"],
+    },
+    gender: {
+      type: String,
+      enum: {
+        values: ["Male", "Female", "Other"],
+        message: "{VALUE} is not supported!",
+      },
+      required: [true, "Gender is required"],
+    },
+    dateOfBirth: { type: String },
+    email: {
+      type: String,
+      trim: true,
+      required: [true, "Email is required!"],
+      unique: true,
+      // email validation check
+      validate: {
+        validator: (value: string) => validator.isEmail(value),
+        message: "{VALUE} is not a valid email type!",
+      },
+    },
+    contactNo: {
+      type: String,
+      trim: true,
+      required: [true, "Contact no is required!"],
+    },
+    emergencyContactNo: {
+      type: String,
+      trim: true,
+      required: [true, "Emergency no is required!"],
+    },
+    bloodGroup: {
+      type: String,
+      enum: {
+        values: ["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"],
+        message: "{VALUE} is not supported!",
+      },
+      required: [true, "Blood group is required!"],
+    },
+    presentAddress: {
+      type: String,
+      trim: true,
+      required: [true, "Present address is required!"],
+    },
+    permanentAddress: {
+      type: String,
+      trim: true,
+      required: [true, "Permanent address is required!"],
+    },
+    gurdian: {
+      type: gurdianSchema,
+      required: [true, "Gurdian info is required!"],
+    },
+    localGurdian: {
+      type: localGurdianSchema,
+      required: [true, "Local Gurdian info is required!"],
+    },
+    profileImage: { type: String },
+    isActive: {
+      type: String,
+      enum: {
+        values: ["Active", "Blocked"],
+        message: "{VALUE} is not supported!",
+      },
+      default: "Active",
+      required: [true, "Status is required!"],
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
-  dateOfBirth: String,
-  email: {
-    type: String,
-    required: true,
+  {
+    toJSON: {
+      virtuals: true,
+    },
   },
-  contactNo: {
-    type: String,
-    required: true,
-  },
-  emergencyContactNo: {
-    type: String,
-    required: true,
-  },
-  bloodGroup: {
-    type: String,
-    enum: ["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"],
-    required: true,
-  },
-  presentAddress: { type: String, required: true },
-  permanentAddress: { type: String, required: true },
-  gurdian: gurdianSchema,
-  localGurdian: localGurdianSchema,
-  profileImage: { type: String },
-  isActive: {
-    type: String,
-    enum: ["Active", "Blocked"],
-    required: true,
-  },
+);
+
+// virtual ---->>
+studentSchema.virtual("fullName").get(function () {
+  return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
 });
 
-export const StudentModel = model<Student>("Student", studentSchema);
+// pre save middleware/hook: will work on create() and save() func
+studentSchema.pre("save", async function (next) {
+  // console.log("pre hook : we will save the data", this);
+  this.password = await bcrypt.hash(
+    this.password,
+    Number(config.bycrypt_salt_round),
+  );
+
+  next();
+});
+
+// post save middleware/hook
+studentSchema.post("save", function (doc, next) {
+  // console.log("post hook : we have saved the data", this);
+
+  doc.password = "";
+
+  next();
+});
+
+// query middleware
+studentSchema.pre("find", function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+studentSchema.pre("findOne", function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+studentSchema.pre("aggregate", function (next) {
+  // this.find({ isDeleted: { $ne: true } });
+  this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
+  next();
+});
+
+// creating a custom static method
+
+studentSchema.statics.isUserExists = async function (id: string) {
+  const existingUser = await Student.findOne({ id });
+  return existingUser;
+};
+
+// creating a custom instance method
+
+// studentSchema.methods.isUserExists = async function (id: string) {
+//   const existingUser = await Student.findOne({ id });
+//   return existingUser;
+// };
+
+export const Student = model<TStudent, StudentModel>("Student", studentSchema);
