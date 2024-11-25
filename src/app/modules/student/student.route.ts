@@ -10,9 +10,6 @@ router.get("/", StudentControllers.getAllStudents);
 // get a single student route
 router.get("/:id", StudentControllers.getSingleStudentData);
 
-// create student route
-router.post("/create-student", StudentControllers.createStudent);
-
 // delete a student data
 router.delete("/:id", StudentControllers.deleteStudentData);
 

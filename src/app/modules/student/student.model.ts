@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import validator from "validator";
-import bcrypt from "bcrypt";
+
 import {
   TGurdian,
   TLocalGurdian,
@@ -8,7 +8,6 @@ import {
   StudentModel,
   TUserName,
 } from "./student.interface";
-import config from "../../config";
 
 // schema for user name
 const userNameSchema = new Schema<TUserName>({
@@ -107,10 +106,11 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       trim: true,
       unique: true,
     },
-    password: {
-      type: String,
-      required: true,
-      trim: true,
+    user: {
+      type: Schema.Types.ObjectId,
+      required: [true, "User id is required!"],
+      unique: true,
+      ref: "User",
     },
     name: {
       type: userNameSchema,
@@ -173,15 +173,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: [true, "Local Gurdian info is required!"],
     },
     profileImage: { type: String },
-    isActive: {
-      type: String,
-      enum: {
-        values: ["Active", "Blocked"],
-        message: "{VALUE} is not supported!",
-      },
-      default: "Active",
-      required: [true, "Status is required!"],
-    },
     isDeleted: {
       type: Boolean,
       default: false,
@@ -191,32 +182,12 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     toJSON: {
       virtuals: true,
     },
-  },
+  }
 );
 
 // virtual ---->>
 studentSchema.virtual("fullName").get(function () {
   return `${this.name.firstName} ${this.name.middleName} ${this.name.lastName}`;
-});
-
-// pre save middleware/hook: will work on create() and save() func
-studentSchema.pre("save", async function (next) {
-  // console.log("pre hook : we will save the data", this);
-  this.password = await bcrypt.hash(
-    this.password,
-    Number(config.bycrypt_salt_round),
-  );
-
-  next();
-});
-
-// post save middleware/hook
-studentSchema.post("save", function (doc, next) {
-  // console.log("post hook : we have saved the data", this);
-
-  doc.password = "";
-
-  next();
 });
 
 // query middleware
