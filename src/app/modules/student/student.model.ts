@@ -103,7 +103,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     id: {
       type: String,
       required: true,
-      trim: true,
       unique: true,
     },
     user: {
@@ -173,16 +172,23 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: [true, "Local Gurdian info is required!"],
     },
     profileImage: { type: String },
-    isDeleted: {
-      type: Boolean,
-      default: false,
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      ref: "AcademicSemester",
+      required: true,
     },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: "AcademicDepartment",
+      required: true,
+    },
+    isDeleted: { type: Boolean, default: false },
   },
   {
     toJSON: {
       virtuals: true,
     },
-  }
+  },
 );
 
 // virtual ---->>

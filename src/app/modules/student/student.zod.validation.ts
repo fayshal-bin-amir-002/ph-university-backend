@@ -41,37 +41,101 @@ const localGurdianValidationSchema = z.object({
 });
 
 // Zod schema for student
-const studentZodValidationSchema = z.object({
-  id: z.string().trim().min(1, "ID is required!"),
-  password: z.string().trim().max(20),
-  name: studentNameValidationSchema,
-  gender: z.enum(["Male", "Female", "Other"], {
-    errorMap: () => ({
-      message: "Gender must be one of Male, Female, or Other!",
+export const createStudentValidationSchema = z.object({
+  body: z.object({
+    password: z.string().trim().max(20),
+    student: z.object({
+      name: studentNameValidationSchema,
+      gender: z.enum(["Male", "Female", "Other"], {
+        errorMap: () => ({
+          message: "Gender must be one of Male, Female, or Other!",
+        }),
+      }),
+      dateOfBirth: z.string().optional(),
+      email: z
+        .string()
+        .trim()
+        .email("Email is not valid!")
+        .min(1, "Email is required!"),
+      contactNo: z.string().trim().min(1, "Contact no is required!"),
+      emergencyContactNo: z.string().trim().min(1, "Emergency no is required!"),
+      bloodGroup: z
+        .enum(["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"], {
+          errorMap: () => ({ message: "Blood group must be a valid type!" }),
+        })
+        .optional(),
+      presentAddress: z.string().trim().min(1, "Present address is required!"),
+      permanentAddress: z
+        .string()
+        .trim()
+        .min(1, "Permanent address is required!"),
+      gurdian: gurdianValidationSchema,
+      localGurdian: localGurdianValidationSchema,
+      profileImage: z.string().url().optional(),
+      admissionSemester: z.string(),
+      academicDepartment: z.string(),
+      isDeleted: z.boolean().default(false),
     }),
   }),
-  dateOfBirth: z.string().optional(),
-  email: z
-    .string()
-    .trim()
-    .email("Email is not valid!")
-    .min(1, "Email is required!"),
-  contactNo: z.string().trim().min(1, "Contact no is required!"),
-  emergencyContactNo: z.string().trim().min(1, "Emergency no is required!"),
-  bloodGroup: z
-    .enum(["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"], {
-      errorMap: () => ({ message: "Blood group must be a valid type!" }),
-    })
-    .optional(),
-  presentAddress: z.string().trim().min(1, "Present address is required!"),
-  permanentAddress: z.string().trim().min(1, "Permanent address is required!"),
-  gurdian: gurdianValidationSchema,
-  localGurdian: localGurdianValidationSchema,
-  profileImage: z.string().url().optional(),
-  isActive: z.enum(["Active", "Blocked"], {
-    errorMap: () => ({ message: "Status must be either Active or Blocked!" }),
-  }),
-  isDeleted: z.boolean(),
 });
 
-export default studentZodValidationSchema;
+const updateStudentNameValidationSchema = z.object({
+  firstName: z
+    .string()
+    .trim()
+    .min(1, "First name is required!")
+    .max(20, "First name cannot be longer than 20 characters!")
+    .refine(
+      (value) => /^[A-Z][a-z]*$/.test(value),
+      (value) => ({ message: `${value} is not in capitalized format!` }),
+    )
+    .optional(),
+  middleName: z.string().trim().optional(),
+  lastName: z
+    .string()
+    .trim()
+    .min(1, "Last name is required!")
+    .refine(
+      (value) => /^[a-zA-Z]+$/.test(value),
+      (value) => ({ message: `${value} is not valid!` }),
+    )
+    .optional(),
+});
+
+export const updateStudentValidationSchema = z.object({
+  body: z.object({
+    student: z
+      .object({
+        name: updateStudentNameValidationSchema.optional(),
+        gender: z
+          .enum(["Male", "Female", "Other"], {
+            errorMap: () => ({
+              message: "Gender must be one of Male, Female, or Other!",
+            }),
+          })
+          .optional(),
+        dateOfBirth: z.string().optional(),
+        email: z.string().trim().email("Email is not valid!").optional(),
+        contactNo: z.string().trim().optional(),
+        emergencyContactNo: z.string().trim().optional(),
+        bloodGroup: z
+          .enum(["A+", "A-", "AB+", "AB-", "B+", "B-", "O+", "O-"], {
+            errorMap: () => ({ message: "Blood group must be a valid type!" }),
+          })
+          .optional(),
+        presentAddress: z.string().trim().optional(),
+        permanentAddress: z.string().trim().optional(),
+        gurdian: gurdianValidationSchema.optional(),
+        localGurdian: localGurdianValidationSchema.optional(),
+        profileImage: z.string().url().optional(),
+        admissionSemester: z.string().optional(),
+        academicDepartment: z.string().optional(),
+        isDeleted: z.boolean().optional(),
+      })
+      .optional(),
+  }),
+});
+
+export const studentValidations = {
+  createStudentValidationSchema,
+};

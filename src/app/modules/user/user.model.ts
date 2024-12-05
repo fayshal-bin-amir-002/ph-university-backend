@@ -5,7 +5,7 @@ import config from "../../config";
 
 const userSchema = new Schema<TUser>(
   {
-    id: { type: String, required: true },
+    id: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     needsPasswordChange: { type: Boolean, default: true },
     role: {
@@ -21,14 +21,14 @@ const userSchema = new Schema<TUser>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 // pre save middleware/hook: will work on create() and save() func
 userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(
     this.password,
-    Number(config.bycrypt_salt_round)
+    Number(config.bycrypt_salt_round),
   );
 
   next();
@@ -37,7 +37,6 @@ userSchema.pre("save", async function (next) {
 // post save middleware/hook
 userSchema.post("save", function (doc, next) {
   doc.password = "";
-
   next();
 });
 
