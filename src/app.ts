@@ -17,6 +17,10 @@ const getAController = (req: Request, res: Response) => {
   res.send("hello world");
 };
 
+const test = (req: Request, res: Response) => {
+  Promise.reject();
+};
+
 app.get("/", getAController);
 
 app.use(globalErrorHandler);

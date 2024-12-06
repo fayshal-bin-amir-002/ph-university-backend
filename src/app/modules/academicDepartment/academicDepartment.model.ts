@@ -17,7 +17,7 @@ const academicDepartmentSchema = new Schema<TAcademicDepartment>(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 academicDepartmentSchema.pre("save", async function (next) {
@@ -27,8 +27,8 @@ academicDepartmentSchema.pre("save", async function (next) {
 
   if (isDepartmentExist) {
     throw new AppError(
-      httpStatus.NOT_FOUND,
-      "This department is already exist!",
+      httpStatus.BAD_REQUEST,
+      "This department is already exist!"
     );
   }
 
@@ -42,7 +42,7 @@ academicDepartmentSchema.pre("findOneAndUpdate", async function (next) {
   if (!isDepartmentExist) {
     throw new AppError(
       httpStatus.NOT_FOUND,
-      "This department does not exist! ",
+      "This department does not exist! "
     );
   }
 
@@ -51,5 +51,5 @@ academicDepartmentSchema.pre("findOneAndUpdate", async function (next) {
 
 export const AcademicDepartment = model<TAcademicDepartment>(
   "AcademicDepartment",
-  academicDepartmentSchema,
+  academicDepartmentSchema
 );

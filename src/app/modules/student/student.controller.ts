@@ -7,14 +7,8 @@ import catchAsync from "../../utils/catchAsync";
 
 // controller for getting all students data
 const getAllStudents = catchAsync(async (req, res) => {
-  const result = await StudentServices.getAllStudentsFromDb();
-  sendResponse<Array<TStudent>>(
-    res,
-    true,
-    200,
-    "Successfully get all students data.",
-    result,
-  );
+  const result = await StudentServices.getAllStudentsFromDb(req.query);
+  sendResponse(res, true, 200, "Successfully get all students data.", result);
 });
 
 // controller for getting a single student data
@@ -45,7 +39,7 @@ const updateStudentData: RequestHandler = catchAsync(async (req, res) => {
   const id: string = req.params.id;
   const result = await StudentServices.updateStudentDataIntoDb(
     id,
-    req.body.student,
+    req.body.student
   );
 
   sendResponse(res, true, 200, "Successfully updated students data.", result);
