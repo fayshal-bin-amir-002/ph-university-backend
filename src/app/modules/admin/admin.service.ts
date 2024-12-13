@@ -54,7 +54,7 @@ const deleteAdminFromDB = async (id: string) => {
     const deletedAdmin = await Admin.findByIdAndUpdate(
       id,
       { isDeleted: true },
-      { new: true, session }
+      { new: true, session },
     );
 
     if (!deletedAdmin) {
@@ -67,7 +67,7 @@ const deleteAdminFromDB = async (id: string) => {
     const deletedUser = await User.findOneAndUpdate(
       userId,
       { isDeleted: true },
-      { new: true, session }
+      { new: true, session },
     );
 
     if (!deletedUser) {

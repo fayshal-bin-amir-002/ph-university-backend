@@ -37,7 +37,7 @@ const assignFacultiesWithCourse = catchAsync(async (req, res) => {
 
   const result = await CourseServices.assignFacultiesWithCourseIntoDB(
     courseId,
-    faculties
+    faculties,
   );
   sendResponse(res, true, 200, "Faculties assigned  succesfully", result);
 });
@@ -48,7 +48,7 @@ const removeFacultiesFromCourse = catchAsync(async (req, res) => {
 
   const result = await CourseServices.removeFacultiesFromCourseFromDB(
     courseId,
-    faculties
+    faculties,
   );
   sendResponse(res, true, 200, "Faculties removed  succesfully", result);
 });

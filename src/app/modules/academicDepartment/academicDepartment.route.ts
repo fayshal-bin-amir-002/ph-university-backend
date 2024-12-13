@@ -8,17 +8,17 @@ const router = express.Router();
 router.post(
   "/create-academic-department",
   // validateRequest(AcademicDepartmentValidationSchema),
-  AcademicDepartmentControllers.createAcademicDepartmemt
+  AcademicDepartmentControllers.createAcademicDepartmemt,
 );
 
 router.get(
   "/:departmentId",
-  AcademicDepartmentControllers.getSingleAcademicDepartment
+  AcademicDepartmentControllers.getSingleAcademicDepartment,
 );
 
 router.patch(
   "/:departmentId",
-  AcademicDepartmentControllers.updateAcademicDeartment
+  AcademicDepartmentControllers.updateAcademicDeartment,
 );
 
 router.get("/", AcademicDepartmentControllers.getAllAcademicDepartments);

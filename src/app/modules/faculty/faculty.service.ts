@@ -11,7 +11,7 @@ import { Faculty } from "./faculty.model";
 const getAllFacultiesFromDB = async (query: Record<string, unknown>) => {
   const facultyQuery = new QueryBuilder(
     Faculty.find().populate("academicDepartment"),
-    query
+    query,
   )
     .search(FacultySearchableFields)
     .filter()
@@ -58,7 +58,7 @@ const deleteFacultyFromDB = async (id: string) => {
     const deletedFaculty = await Faculty.findByIdAndUpdate(
       id,
       { isDeleted: true },
-      { new: true, session }
+      { new: true, session },
     );
 
     if (!deletedFaculty) {
@@ -71,7 +71,7 @@ const deleteFacultyFromDB = async (id: string) => {
     const deletedUser = await User.findByIdAndUpdate(
       userId,
       { isDeleted: true },
-      { new: true, session }
+      { new: true, session },
     );
 
     if (!deletedUser) {

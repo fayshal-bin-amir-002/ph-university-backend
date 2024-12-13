@@ -46,7 +46,7 @@ export const findLastFacultyId = async () => {
     {
       id: 1,
       _id: 0,
-    }
+    },
   )
     .sort({
       createdAt: -1,
@@ -80,7 +80,7 @@ export const findLastAdminId = async () => {
     {
       id: 1,
       _id: 0,
-    }
+    },
   )
     .sort({
       createdAt: -1,

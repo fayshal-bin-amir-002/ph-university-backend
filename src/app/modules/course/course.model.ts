@@ -18,7 +18,7 @@ const preRequisiteCoursesSchema = new Schema<TPreRequisiteCourses>(
   },
   {
     _id: false,
-  }
+  },
 );
 
 const courseSchema = new Schema<TCourse>(
@@ -52,7 +52,7 @@ const courseSchema = new Schema<TCourse>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export const Course = model<TCourse>("Course", courseSchema);
@@ -73,5 +73,5 @@ const courseFacultySchema = new Schema<TCoursefaculty>({
 
 export const CourseFaculty = model<TCoursefaculty>(
   "CourseFaculty",
-  courseFacultySchema
+  courseFacultySchema,
 );

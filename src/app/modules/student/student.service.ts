@@ -68,7 +68,7 @@ const getAllStudentsFromDb = async (query: Record<string, unknown>) => {
           path: "academicFaculty",
         },
       }),
-    query
+    query,
   )
     .search(studentSearchableFields)
     .filter()
@@ -115,7 +115,7 @@ const deleteStudentFromDb = async (id: string) => {
     const deletedStudent = await Student.findByIdAndUpdate(
       id,
       { isDeleted: true },
-      { new: true, session }
+      { new: true, session },
     );
 
     if (!deletedStudent) {
@@ -125,7 +125,7 @@ const deleteStudentFromDb = async (id: string) => {
     const deletedUser = await User.findByIdAndUpdate(
       id,
       { isDeleted: true },
-      { new: true, session }
+      { new: true, session },
     );
     if (!deletedUser) {
       throw new AppError(httpStatus.BAD_REQUEST, "Failed to Delete user!");
@@ -144,7 +144,7 @@ const deleteStudentFromDb = async (id: string) => {
 
 const updateStudentDataIntoDb = async (
   id: string,
-  payload: Partial<TStudent>
+  payload: Partial<TStudent>,
 ) => {
   const { name, gurdian, localGurdian, ...remainingStudentData } = payload;
 

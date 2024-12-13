@@ -28,7 +28,7 @@ const createStudentIntoDb = async (password: string, studentData: TStudent) => {
 
   // find academic semester info
   const admissionSemester = await AcademicSemester.findById(
-    studentData.admissionSemester
+    studentData.admissionSemester,
   );
 
   // created a session
@@ -42,7 +42,7 @@ const createStudentIntoDb = async (password: string, studentData: TStudent) => {
     } else {
       throw new AppError(
         500,
-        "Admission semester is required to generate a student ID."
+        "Admission semester is required to generate a student ID.",
       );
     }
 
@@ -87,7 +87,7 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
 
   // find academic department info
   const academicDepartment = await AcademicDepartment.findById(
-    payload.academicDepartment
+    payload.academicDepartment,
   );
 
   if (!academicDepartment) {

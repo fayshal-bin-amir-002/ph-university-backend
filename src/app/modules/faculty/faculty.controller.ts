@@ -12,7 +12,7 @@ const getSingleFaculty = catchAsync(async (req, res) => {
     true,
     httpStatus.OK,
     "Faculty is retrieved succesfully",
-    result
+    result,
   );
 });
 
@@ -24,7 +24,7 @@ const getAllFaculties = catchAsync(async (req, res) => {
     true,
     httpStatus.OK,
     "Faculties are retrieved succesfully",
-    result
+    result,
   );
 });
 
@@ -38,7 +38,7 @@ const updateFaculty = catchAsync(async (req, res) => {
     true,
     httpStatus.OK,
     "Faculty is updated succesfully",
-    result
+    result,
   );
 });
 
@@ -51,7 +51,7 @@ const deleteFaculty = catchAsync(async (req, res) => {
     true,
     httpStatus.OK,
     "Faculty is deleted succesfully",
-    result
+    result,
   );
 });
 

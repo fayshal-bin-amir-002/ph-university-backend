@@ -91,7 +91,7 @@ const facultySchema = new Schema<TFaculty, FacultyModel>(
     toJSON: {
       virtuals: true,
     },
-  }
+  },
 );
 
 // generating full name

@@ -20,14 +20,14 @@ const getAllCoursesFromDB = async (query: Record<string, unknown>) => {
     .fields();
 
   const result = await courseQuery.modelQuery.populate(
-    "preRequisiteCourses.course"
+    "preRequisiteCourses.course",
   );
   return result;
 };
 
 const getSingleCourseFromDB = async (id: string) => {
   const result = await Course.findById(id).populate(
-    "preRequisiteCourses.course"
+    "preRequisiteCourses.course",
   );
   return result;
 };
@@ -47,7 +47,7 @@ const updateCourseIntoDB = async (id: string, payload: Partial<TCourse>) => {
         new: true,
         runValidators: true,
         session,
-      }
+      },
     );
 
     if (!updatedBasicCourseInfo) {
@@ -72,7 +72,7 @@ const updateCourseIntoDB = async (id: string, payload: Partial<TCourse>) => {
           new: true,
           runValidators: true,
           session,
-        }
+        },
       );
 
       if (!deletedPreRequisiteCourses) {
@@ -81,7 +81,7 @@ const updateCourseIntoDB = async (id: string, payload: Partial<TCourse>) => {
 
       // filter out the new course fields
       const newPreRequisites = preRequisiteCourses?.filter(
-        (el) => el.course && !el.isDeleted
+        (el) => el.course && !el.isDeleted,
       );
 
       const newPreRequisiteCourses = await Course.findByIdAndUpdate(
@@ -93,7 +93,7 @@ const updateCourseIntoDB = async (id: string, payload: Partial<TCourse>) => {
           new: true,
           runValidators: true,
           session,
-        }
+        },
       );
 
       if (!newPreRequisiteCourses) {
@@ -105,7 +105,7 @@ const updateCourseIntoDB = async (id: string, payload: Partial<TCourse>) => {
     await session.endSession();
 
     const result = await Course.findById(id).populate(
-      "preRequisiteCourses.course"
+      "preRequisiteCourses.course",
     );
 
     return result;
@@ -122,14 +122,14 @@ const deleteCourseFromDB = async (id: string) => {
     { isDeleted: true },
     {
       new: true,
-    }
+    },
   );
   return result;
 };
 
 const assignFacultiesWithCourseIntoDB = async (
   id: string,
-  payload: Partial<TCoursefaculty>
+  payload: Partial<TCoursefaculty>,
 ) => {
   const result = await CourseFaculty.findByIdAndUpdate(
     id,
@@ -140,14 +140,14 @@ const assignFacultiesWithCourseIntoDB = async (
     {
       upsert: true,
       new: true,
-    }
+    },
   );
   return result;
 };
 
 const removeFacultiesFromCourseFromDB = async (
   id: string,
-  payload: Partial<TCoursefaculty>
+  payload: Partial<TCoursefaculty>,
 ) => {
   const result = await CourseFaculty.findByIdAndUpdate(
     id,
@@ -156,7 +156,7 @@ const removeFacultiesFromCourseFromDB = async (
     },
     {
       new: true,
-    }
+    },
   );
   return result;
 };

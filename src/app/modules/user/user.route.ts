@@ -12,19 +12,19 @@ const router = express.Router();
 router.post(
   "/create-student",
   validateRequest(createStudentValidationSchema),
-  UserControllers.createStudent
+  UserControllers.createStudent,
 );
 
 router.post(
   "/create-faculty",
   validateRequest(createFacultyValidationSchema),
-  UserControllers.createFaculty
+  UserControllers.createFaculty,
 );
 
 router.post(
   "/create-admin",
   validateRequest(createAdminValidationSchema),
-  UserControllers.createAdmin
+  UserControllers.createAdmin,
 );
 
 export const UserRoutes = router;
