@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import mongoose from "mongoose";
 import config from "../../config";
 import AppError from "../../errors/AppError";
@@ -15,8 +16,14 @@ import { TFaculty } from "../faculty/faculty.interface";
 import { AcademicDepartment } from "../academicDepartment/academicDepartment.model";
 import { Faculty } from "../faculty/faculty.model";
 import { Admin } from "../admin/admin.model";
+import httpStatus from "http-status";
+import { sendImageToCloudinary } from "../../utils/sendImageToCloudinary";
 
-const createStudentIntoDb = async (password: string, studentData: TStudent) => {
+const createStudentIntoDb = async (
+  file: any,
+  password: string,
+  studentData: TStudent,
+) => {
   // create a user object
   const userData: Partial<TUser> = {};
 
@@ -26,10 +33,19 @@ const createStudentIntoDb = async (password: string, studentData: TStudent) => {
   // set student role
   userData.role = "student";
 
+  userData.email = studentData.email;
+
   // find academic semester info
   const admissionSemester = await AcademicSemester.findById(
     studentData.admissionSemester,
   );
+
+  if (!admissionSemester) {
+    throw new AppError(
+      500,
+      "Admission semester is required to generate a student ID.",
+    );
+  }
 
   // created a session
   const session = await mongoose.startSession();
@@ -37,14 +53,16 @@ const createStudentIntoDb = async (password: string, studentData: TStudent) => {
   try {
     session.startTransaction();
     // set generated id
-    if (admissionSemester) {
-      userData.id = await generateStudentId(admissionSemester);
-    } else {
-      throw new AppError(
-        500,
-        "Admission semester is required to generate a student ID.",
-      );
-    }
+
+    userData.id = await generateStudentId(admissionSemester);
+
+    const imageName = `${userData.id}${studentData?.name?.firstName}`;
+    const path = file?.path;
+    //send image to cloudinary
+    const { secure_url } = (await sendImageToCloudinary(
+      imageName,
+      path,
+    )) as any;
 
     // create a user (transaction 1)
     const result = await User.create([userData], { session }); // result will be an array
@@ -56,6 +74,7 @@ const createStudentIntoDb = async (password: string, studentData: TStudent) => {
     // set id, _id as user
     studentData.id = result[0].id;
     studentData.user = result[0]._id; // reference id
+    studentData.profileImage = secure_url;
     // create a student (transaction 2)
     const newStudent = await Student.create([studentData], { session });
 
@@ -84,6 +103,8 @@ const createFacultyIntoDB = async (password: string, payload: TFaculty) => {
 
   //set student role
   userData.role = "faculty";
+
+  userData.email = payload.email;
 
   // find academic department info
   const academicDepartment = await AcademicDepartment.findById(
@@ -141,6 +162,8 @@ const createAdminIntoDB = async (password: string, payload: TFaculty) => {
   //set student role
   userData.role = "admin";
 
+  userData.email = payload.email;
+
   const session = await mongoose.startSession();
 
   try {
@@ -177,8 +200,33 @@ const createAdminIntoDB = async (password: string, payload: TFaculty) => {
   }
 };
 
+const getMe = async (id: string, role: string) => {
+  let result = null;
+  if (role === "student") {
+    result = await Student.findOne({ id }).populate("user");
+  }
+  if (role === "admin") {
+    result = await Admin.findOne({ id }).populate("user");
+  }
+
+  if (role === "faculty") {
+    result = await Faculty.findOne({ id }).populate("user");
+  }
+
+  return result;
+};
+
+const changeStatus = async (id: string, payload: { status: string }) => {
+  const result = await User.findByIdAndUpdate(id, payload, {
+    new: true,
+  });
+  return result;
+};
+
 export const UserServices = {
   createStudentIntoDb,
   createFacultyIntoDB,
   createAdminIntoDB,
+  getMe,
+  changeStatus,
 };
