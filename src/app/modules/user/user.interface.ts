@@ -7,7 +7,7 @@ export interface TUser {
   password: string;
   needsPasswordChange: boolean;
   passwordChangedAt?: Date;
-  role: "admin" | "faculty" | "student";
+  role: "admin" | "faculty" | "student" | "superAdmin";
   status: "in-progress" | "blocked";
   isDeleted: boolean;
 }

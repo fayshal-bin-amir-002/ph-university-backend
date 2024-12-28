@@ -13,7 +13,7 @@ export type Month =
   | "December";
 
 export type TAcademicSemester = {
-  name: "Autum" | "Summar" | "Fall";
+  name: "Autum" | "Summer" | "Fall";
   year: string;
   code: "01" | "02" | "03";
   startMonth: Month;

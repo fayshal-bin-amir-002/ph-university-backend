@@ -71,9 +71,9 @@ export const createStudentValidationSchema = z.object({
         .min(1, "Permanent address is required!"),
       gurdian: gurdianValidationSchema,
       localGurdian: localGurdianValidationSchema,
-      profileImage: z.string().url().optional(),
       admissionSemester: z.string(),
       academicDepartment: z.string(),
+      academicFaculty: z.string().optional(),
       isDeleted: z.boolean().default(false),
     }),
   }),
@@ -130,6 +130,7 @@ export const updateStudentValidationSchema = z.object({
         profileImage: z.string().url().optional(),
         admissionSemester: z.string().optional(),
         academicDepartment: z.string().optional(),
+        academicFaculty: z.string().optional(),
         isDeleted: z.boolean().optional(),
       })
       .optional(),

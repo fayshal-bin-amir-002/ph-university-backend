@@ -171,7 +171,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       type: localGurdianSchema,
       required: [true, "Local Gurdian info is required!"],
     },
-    profileImage: { type: String },
+    profileImage: { type: String, default: "" },
     admissionSemester: {
       type: Schema.Types.ObjectId,
       ref: "AcademicSemester",
@@ -181,6 +181,10 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       type: Schema.Types.ObjectId,
       ref: "AcademicDepartment",
       required: true,
+    },
+    academicFaculty: {
+      type: Schema.Types.ObjectId,
+      ref: "AcademicFaculty",
     },
     isDeleted: { type: Boolean, default: false },
   },
@@ -193,7 +197,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
 
 // virtual ---->>
 studentSchema.virtual("fullName").get(function () {
-  return `${this?.name?.firstName} ${this?.name?.middleName} ${this?.name?.lastName}`;
+  return `${this?.name?.firstName} ${this?.name?.middleName || ""} ${this?.name?.lastName}`;
 });
 
 // query middleware

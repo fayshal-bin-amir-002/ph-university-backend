@@ -9,12 +9,13 @@ const app: Application = express();
 
 // parsers
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: ["http://localhost:5500"],
+    credentials: true,
   }),
 );
-app.use(cookieParser());
 
 // application routes
 app.use("/api/v1", router);

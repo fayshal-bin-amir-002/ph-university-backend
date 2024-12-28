@@ -20,10 +20,10 @@ const MonthEnum = z.enum(
   },
 );
 
-const AcademicSemesterNameEnum = z.enum(["Autum", "Summar", "Fall"], {
+const AcademicSemesterNameEnum = z.enum(["Autum", "Summer", "Fall"], {
   errorMap: () => ({
     message:
-      "Invalid semester name. Must be one of: 'Autum', 'Summar', or 'Fall'.",
+      "Invalid semester name. Must be one of: 'Autum', 'Summer', or 'Fall'.",
   }),
 });
 
