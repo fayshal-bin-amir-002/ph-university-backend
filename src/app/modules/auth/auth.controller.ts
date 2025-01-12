@@ -11,7 +11,7 @@ const loginUser = catchAsync(async (req, res) => {
   res.cookie("refreshToken", refreshToken, {
     secure: config.node_env === "production",
     httpOnly: true,
-    sameSite: "none",
+    sameSite: "strict", // strict | none
     maxAge: 1000 * 60 * 60 * 24 * 365,
   });
 
@@ -30,7 +30,7 @@ const changePassword = catchAsync(async (req, res) => {
     true,
     httpStatus.OK,
     "Password is updated succesfully!",
-    result,
+    result
   );
 });
 
@@ -42,7 +42,7 @@ const refreshToken = catchAsync(async (req, res) => {
     true,
     httpStatus.OK,
     "Access token is retrieved succesfully!",
-    result,
+    result
   );
 });
 
@@ -54,7 +54,7 @@ const forgetPassword = catchAsync(async (req, res) => {
     true,
     httpStatus.OK,
     "Reset link is generated succesfully!",
-    result,
+    result
   );
 });
 

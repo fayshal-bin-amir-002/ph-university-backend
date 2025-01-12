@@ -18,7 +18,10 @@ const auth = (...requiredRoles: TUserRole[]) => {
     }
 
     // checking if the given token is valid
-    const decoded = verifyToken(token, config.jwt_access_secret as string);
+    const decoded = verifyToken(
+      token,
+      config.jwt_access_secret as string
+    ) as JwtPayload;
 
     const { role, userId, iat } = decoded;
 
@@ -47,7 +50,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
       user.passwordChangedAt &&
       User.isJWTIssuedBeforePasswordChanged(
         user.passwordChangedAt,
-        iat as number,
+        iat as number
       )
     ) {
       throw new AppError(httpStatus.UNAUTHORIZED, "You are not authorized !");
@@ -56,7 +59,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
     if (requiredRoles && !requiredRoles.includes(role)) {
       throw new AppError(
         httpStatus.UNAUTHORIZED,
-        "You are not authorized  hi!",
+        "You are not authorized  hi!"
       );
     }
 
