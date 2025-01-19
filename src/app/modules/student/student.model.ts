@@ -163,11 +163,11 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       trim: true,
       required: [true, "Permanent address is required!"],
     },
-    gurdian: {
+    guardian: {
       type: gurdianSchema,
       required: [true, "Gurdian info is required!"],
     },
-    localGurdian: {
+    localGuardian: {
       type: localGurdianSchema,
       required: [true, "Local Gurdian info is required!"],
     },
@@ -192,7 +192,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     toJSON: {
       virtuals: true,
     },
-  },
+  }
 );
 
 // virtual ---->>

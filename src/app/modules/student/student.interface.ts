@@ -35,8 +35,8 @@ export type TStudent = {
   bloodGroup?: "A+" | "A-" | "B+" | "B-" | "O+" | "O-" | "AB+" | "AB-";
   presentAddress: string;
   permanentAddress: string;
-  gurdian: TGurdian;
-  localGurdian: TLocalGurdian;
+  guardian: TGurdian;
+  localGuardian: TLocalGurdian;
   profileImage?: string;
   admissionSemester: Types.ObjectId;
   academicDepartment: Types.ObjectId;

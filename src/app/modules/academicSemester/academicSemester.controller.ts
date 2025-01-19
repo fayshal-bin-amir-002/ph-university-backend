@@ -9,7 +9,7 @@ import { TAcademicSemester } from "./academicSemester.interface";
 const createAcademicSemester: RequestHandler = catchAsync(async (req, res) => {
   // will call service func to send this data
   const result = await AcademicSemesterServices.createAcademicSemester(
-    req.body,
+    req.body
   );
 
   // send response
@@ -18,12 +18,14 @@ const createAcademicSemester: RequestHandler = catchAsync(async (req, res) => {
     true,
     200,
     "Academic semester is created successfully",
-    result,
+    result
   );
 });
 
 const getAllAcademicSemester: RequestHandler = catchAsync(async (req, res) => {
-  const result = await AcademicSemesterServices.getAllAcademicSemester();
+  const result = await AcademicSemesterServices.getAllAcademicSemester(
+    req.query
+  );
 
   // send response
   sendResponse<TAcademicSemester[] | undefined>(
@@ -31,7 +33,7 @@ const getAllAcademicSemester: RequestHandler = catchAsync(async (req, res) => {
     true,
     200,
     "Successfully get all Academic semester.",
-    result,
+    result
   );
 });
 
@@ -42,7 +44,7 @@ const getASingleAcademicSemester: RequestHandler = catchAsync(
       await AcademicSemesterServices.getASingleAcademicSemester(_id);
     // send response
     sendResponse(res, true, 200, "Successfully get Academic semester.", result);
-  },
+  }
 );
 
 const updateAcademicSemester: RequestHandler = catchAsync(async (req, res) => {
@@ -50,7 +52,7 @@ const updateAcademicSemester: RequestHandler = catchAsync(async (req, res) => {
   const data = req.body;
   const result = await AcademicSemesterServices.updateAcademicSemester(
     _id,
-    data,
+    data
   );
   // send response
   sendResponse(
@@ -58,7 +60,7 @@ const updateAcademicSemester: RequestHandler = catchAsync(async (req, res) => {
     true,
     200,
     "Successfully updated Academic semester.",
-    result,
+    result
   );
 });
 

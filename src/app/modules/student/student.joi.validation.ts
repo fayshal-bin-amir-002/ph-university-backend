@@ -97,10 +97,10 @@ const studentValidationSchema = Joi.object({
   permanentAddress: Joi.string().trim().required().messages({
     "string.empty": "Permanent address is required!",
   }),
-  gurdian: gurdianValidationSchema.required().messages({
+  guardian: gurdianValidationSchema.required().messages({
     "any.required": "Gurdian info is required!",
   }),
-  localGurdian: localGurdianValidationSchema.required().messages({
+  localGuardian: localGurdianValidationSchema.required().messages({
     "any.required": "Local Gurdian info is required!",
   }),
   profileImage: Joi.string().uri().allow(null, ""),

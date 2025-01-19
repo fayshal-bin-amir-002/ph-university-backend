@@ -68,7 +68,7 @@ const getAllStudentsFromDb = async (query: Record<string, unknown>) => {
           path: "academicFaculty",
         },
       }),
-    query,
+    query
   )
     .search(studentSearchableFields)
     .filter()
@@ -79,11 +79,11 @@ const getAllStudentsFromDb = async (query: Record<string, unknown>) => {
   const result = await studentQuery.modelQuery;
   const meta = await studentQuery.countTotal();
 
-  return { result, meta };
+  return { data: result, meta };
 };
 
 const getSingleStudentData = async (id: string) => {
-  const result = await Student.findById({ id })
+  const result = await Student.findOne({ _id: id })
     .populate("admissionSemester")
     .populate({
       path: "academicDepartment",
@@ -116,7 +116,7 @@ const deleteStudentFromDb = async (id: string) => {
     const deletedStudent = await Student.findByIdAndUpdate(
       id,
       { isDeleted: true },
-      { new: true, session },
+      { new: true, session }
     );
 
     if (!deletedStudent) {
@@ -126,7 +126,7 @@ const deleteStudentFromDb = async (id: string) => {
     const deletedUser = await User.findByIdAndUpdate(
       id,
       { isDeleted: true },
-      { new: true, session },
+      { new: true, session }
     );
     if (!deletedUser) {
       throw new AppError(httpStatus.BAD_REQUEST, "Failed to Delete user!");
@@ -145,9 +145,9 @@ const deleteStudentFromDb = async (id: string) => {
 
 const updateStudentDataIntoDb = async (
   id: string,
-  payload: Partial<TStudent>,
+  payload: Partial<TStudent>
 ) => {
-  const { name, gurdian, localGurdian, ...remainingStudentData } = payload;
+  const { name, guardian, localGuardian, ...remainingStudentData } = payload;
 
   const modifiedUpdatedData: Record<string, unknown> = {
     ...remainingStudentData,
@@ -159,15 +159,15 @@ const updateStudentDataIntoDb = async (
     }
   }
 
-  if (gurdian && Object.keys(gurdian).length) {
-    for (const [key, value] of Object.entries(gurdian)) {
+  if (guardian && Object.keys(guardian).length) {
+    for (const [key, value] of Object.entries(guardian)) {
       modifiedUpdatedData[`gurdian.${key}`] = value;
     }
   }
 
-  if (localGurdian && Object.keys(localGurdian).length) {
-    for (const [key, value] of Object.entries(localGurdian)) {
-      modifiedUpdatedData[`localGurdian.${key}`] = value;
+  if (localGuardian && Object.keys(localGuardian).length) {
+    for (const [key, value] of Object.entries(localGuardian)) {
+      modifiedUpdatedData[`localGuardian.${key}`] = value;
     }
   }
 

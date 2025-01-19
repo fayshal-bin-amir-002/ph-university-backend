@@ -39,7 +39,7 @@ const updateStudentData: RequestHandler = catchAsync(async (req, res) => {
   const id: string = req.params.id;
   const result = await StudentServices.updateStudentDataIntoDb(
     id,
-    req.body.student,
+    req.body.student
   );
 
   sendResponse(res, true, 200, "Successfully updated students data.", result);

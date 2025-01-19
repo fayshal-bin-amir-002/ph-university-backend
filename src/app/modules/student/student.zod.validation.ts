@@ -9,7 +9,7 @@ const studentNameValidationSchema = z.object({
     .max(20, "First name cannot be longer than 20 characters!")
     .refine(
       (value) => /^[A-Z][a-z]*$/.test(value),
-      (value) => ({ message: `${value} is not in capitalized format!` }),
+      (value) => ({ message: `${value} is not in capitalized format!` })
     ),
   middleName: z.string().trim().optional(),
   lastName: z
@@ -18,7 +18,7 @@ const studentNameValidationSchema = z.object({
     .min(1, "Last name is required!")
     .refine(
       (value) => /^[a-zA-Z]+$/.test(value),
-      (value) => ({ message: `${value} is not valid!` }),
+      (value) => ({ message: `${value} is not valid!` })
     ),
 });
 
@@ -69,8 +69,8 @@ export const createStudentValidationSchema = z.object({
         .string()
         .trim()
         .min(1, "Permanent address is required!"),
-      gurdian: gurdianValidationSchema,
-      localGurdian: localGurdianValidationSchema,
+      guardian: gurdianValidationSchema,
+      localGuardian: localGurdianValidationSchema,
       admissionSemester: z.string(),
       academicDepartment: z.string(),
       academicFaculty: z.string().optional(),
@@ -87,7 +87,7 @@ const updateStudentNameValidationSchema = z.object({
     .max(20, "First name cannot be longer than 20 characters!")
     .refine(
       (value) => /^[A-Z][a-z]*$/.test(value),
-      (value) => ({ message: `${value} is not in capitalized format!` }),
+      (value) => ({ message: `${value} is not in capitalized format!` })
     )
     .optional(),
   middleName: z.string().trim().optional(),
@@ -97,7 +97,7 @@ const updateStudentNameValidationSchema = z.object({
     .min(1, "Last name is required!")
     .refine(
       (value) => /^[a-zA-Z]+$/.test(value),
-      (value) => ({ message: `${value} is not valid!` }),
+      (value) => ({ message: `${value} is not valid!` })
     )
     .optional(),
 });

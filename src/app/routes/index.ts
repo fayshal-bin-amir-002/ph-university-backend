@@ -11,6 +11,7 @@ import { semesterRegistrationRoutes } from "../modules/semesterRegistration/seme
 import { offeredCourseRoutes } from "../modules/offeredCourse/OfferedCourse.route";
 import { AuthRoutes } from "../modules/auth/auth.route";
 import { EnrolledCourseRoutes } from "../modules/EnrolledCourse/enrolledCourse.route";
+
 const router = express.Router();
 
 const moduleRoutes = [
